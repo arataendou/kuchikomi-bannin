@@ -266,8 +266,15 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <footer className="border-t border-gray-100 py-8 text-center">
-        <p className="text-xs text-gray-400">クチコミ番人</p>
+      <footer className="border-t border-gray-100 py-8">
+        <div className="max-w-3xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-gray-400">クチコミ番人</p>
+          <div className="flex items-center gap-4">
+            <Link href="/law/privacy" className="text-xs text-gray-400 hover:text-gray-600">プライバシーポリシー</Link>
+            <Link href="/law/terms" className="text-xs text-gray-400 hover:text-gray-600">利用規約</Link>
+            <Link href="/law/tokushoho" className="text-xs text-gray-400 hover:text-gray-600">特定商取引法に基づく表記</Link>
+          </div>
+        </div>
       </footer>
     </div>
   );

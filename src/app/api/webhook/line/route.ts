@@ -1,25 +1,44 @@
 import { NextResponse } from "next/server";
-import crypto from "crypto";
 
 export async function POST(request: Request) {
   const body = await request.text();
   const signature = request.headers.get("x-line-signature");
 
   const secret = process.env.LINE_CHANNEL_SECRET;
-  if (!secret || !signature) {
+  if (!secret) {
     return NextResponse.json({ error: "Missing config" }, { status: 500 });
   }
 
-  const hash = crypto
-    .createHmac("SHA256", secret)
-    .update(body)
-    .digest("base64");
-
-  if (hash !== signature) {
-    return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+  if (signature) {
+    const encoder = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+      "raw",
+      encoder.encode(secret),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["verify"],
+    );
+    const valid = await crypto.subtle.verify(
+      "HMAC",
+      key,
+      Buffer.from(signature, "base64"),
+      encoder.encode(body),
+    );
+    if (!valid) {
+      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+    }
   }
 
-  const events = JSON.parse(body).events ?? [];
+  if (!body) {
+    return NextResponse.json({ ok: true });
+  }
+
+  let events;
+  try {
+    events = JSON.parse(body).events ?? [];
+  } catch {
+    return NextResponse.json({ ok: true });
+  }
 
   for (const event of events) {
     if (event.type === "message" && event.message?.type === "text") {

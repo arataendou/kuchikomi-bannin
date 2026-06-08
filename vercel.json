@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/reviews?secret=a248de8a3995ce0c6e796b065c53bcc2",
+      "schedule": "0 * * * *"
+    }
+  ]
+}

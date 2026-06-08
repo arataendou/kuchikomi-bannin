@@ -1,0 +1,14 @@
+name: Fetch Reviews
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch reviews
+        run: |
+          curl -sf "https://kuchikomi-bannin.vercel.app/api/reviews?secret=${{ secrets.CRON_SECRET }}"

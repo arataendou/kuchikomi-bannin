@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createHmac } from "crypto";
 
 export async function POST(request: Request) {
   const body = await request.text();
@@ -10,21 +11,8 @@ export async function POST(request: Request) {
   }
 
   if (signature) {
-    const encoder = new TextEncoder();
-    const key = await crypto.subtle.importKey(
-      "raw",
-      encoder.encode(secret),
-      { name: "HMAC", hash: "SHA-256" },
-      false,
-      ["verify"],
-    );
-    const valid = await crypto.subtle.verify(
-      "HMAC",
-      key,
-      Buffer.from(signature, "base64"),
-      encoder.encode(body),
-    );
-    if (!valid) {
+    const hash = createHmac("sha256", secret).update(body).digest("base64");
+    if (hash !== signature) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
   }

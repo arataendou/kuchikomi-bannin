@@ -16,8 +16,8 @@ export default function TokushohoPage() {
         <div className="divide-y divide-gray-100">
           {[
             { label: "事業者名", value: "V-Corp" },
-            { label: "代表者", value: "（ご自身のお名前を記入ください）" },
-            { label: "所在地", value: "（ご自身の住所を記入ください）" },
+            { label: "代表者", value: "遠藤 新大" },
+            { label: "所在地", value: "東京都江戸川区西葛西3丁目16番20号 ペルシェール西葛西309号室" },
             { label: "連絡先", value: "support@kuchikomi-bannin.vercel.app" },
             { label: "販売価格", value: "Proプラン 月額1,480円（税込）" },
             { label: "支払方法", value: "クレジットカード決済（Stripe）" },
